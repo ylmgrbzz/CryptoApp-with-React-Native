@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 import { View, Text } from "react-native";
+import { SafeAreaView, FlatList } from "react-native";
+import Item from "./Item";
 
 const fetchData = () => {
   return fetch(
@@ -19,16 +21,25 @@ const App = () => {
   useEffect(() => {
     fetchData()
       .then((response) => response.json())
-      .then((json) => {
-        setData(json);
-        console.log(json);
+      .then((data) => {
+        setData(data);
+        console.log(data);
       })
       .catch((error) => {
         console.error(error);
       });
   }, []);
 
-  return null;
+  return (
+    <SafeAreaView>
+      <FlatList
+        data={data}
+        renderItem={({ item }) => <Item item={item} />}
+        keyExtractor={(item) => item.id}
+      />
+      <Text>{data.length}</Text>
+    </SafeAreaView>
+  );
 };
 
 export default App;
